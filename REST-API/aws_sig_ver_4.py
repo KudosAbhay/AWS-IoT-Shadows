@@ -1,7 +1,8 @@
 #------------------------------------------
 #--- Author: Pradeep Singh
-#--- Date: 2nd April 2017
-#--- Version: 1.0
+#--- Created Date: 29th March 2017
+#--- Forked Date: 21-November-2017
+#--- Version: 1.1
 #--- Python Ver: Python 2.7
 #--- Description: This code will generate HTTP Request Headers, with AWS Signature 4 Authorization Header.
 #---
@@ -57,12 +58,12 @@ def get_Authorization_Header(Http_Method, IoT_Endpoint, AWS_Region, Shadow_URI, 
 
 	# TASK 2: CREATE A STRING TO SIGN FOR SIGNATURE VERSION 4
 	# Details:  http://docs.aws.amazon.com/general/latest/gr/sigv4-create-string-to-sign.html
-	# Create Credential Scope 
-	Credential_Scope = Date_Stamp + '/' + AWS_Region + '/' + AWS_Service_Name + '/' + 'aws4_request' 
-	# Create a String to Sign for Signature Version 4 
+	# Create Credential Scope
+	Credential_Scope = Date_Stamp + '/' + AWS_Region + '/' + AWS_Service_Name + '/' + 'aws4_request'
+	# Create a String to Sign for Signature Version 4
 	String_To_Sign = Algorithm + '\n' +  Amz_Date + '\n' +  Credential_Scope + '\n' +  hashlib.sha256(Http_Request).hexdigest()
 
-	# TASK 3: CALCULATE THE SIGNATURE FOR AWS SIGNATURE VERSION 4 
+	# TASK 3: CALCULATE THE SIGNATURE FOR AWS SIGNATURE VERSION 4
 	# Details:  http://docs.aws.amazon.com/general/latest/gr/sigv4-calculate-signature.html
 	# Create the signing key using the function defined above.
 	Signing_Key = getSignatureKey(Secret_Key, Date_Stamp, AWS_Region, AWS_Service_Name)
@@ -79,7 +80,7 @@ def get_Authorization_Header(Http_Method, IoT_Endpoint, AWS_Region, Shadow_URI, 
 def get_HTTP_Request_Header(Http_Method, IoT_Endpoint, AWS_Region, Shadow_URI, Access_Key, Secret_Key, Http_Request_Payload):
 	# Get Authorization Header
 	HTTP_Authorization_Header = get_Authorization_Header(Http_Method, IoT_Endpoint, AWS_Region, Shadow_URI, Access_Key, Secret_Key, Http_Request_Payload)
-	# Prepare HTTP Headers for Request 
+	# Prepare HTTP Headers for Request
 	HTTP_Headers = {'content-type': Content_Type_Header, 'host': IoT_Endpoint, 'x-amz-date': Amz_Date, 'Authorization': HTTP_Authorization_Header}
 	# Return Headers
 	return HTTP_Headers

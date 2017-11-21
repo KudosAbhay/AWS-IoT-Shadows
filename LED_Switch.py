@@ -1,9 +1,11 @@
-# ------------------------------------------
-# --- Author: Pradeep Singh
-# --- Date: 29th March 2017
-# --- Version: 1.0
-# --- Description: This python script will update AWS Thing Shadow for a Device/Thing
-# ------------------------------------------
+#------------------------------------------
+#--- Author: Pradeep Singh
+#--- Created Date: 29th March 2017
+#--- Forked Date: 21-November-2017
+#--- Version: 1.1
+#--- Python Ver: Python 2.7
+#--- Description: This python script will update AWS Thing Shadow for a Device/Thing
+#------------------------------------------
 
 # Import package
 import paho.mqtt.client as mqtt
@@ -47,9 +49,9 @@ def on_connect(mosq, obj, rc):
     mqttc.subscribe(SHADOW_UPDATE_ACCEPTED_TOPIC, 1)
     mqttc.subscribe(SHADOW_UPDATE_REJECTED_TOPIC, 1)
 
-# Define on_message event function. 
+# Define on_message event function.
 # This function will be invoked every time,
-# a new message arrives for the subscribed topic 
+# a new message arrives for the subscribed topic
 def on_message(mosq, obj, msg):
 	if str(msg.topic) == SHADOW_UPDATE_ACCEPTED_TOPIC:
 		print "\n---SUCCESS---\nShadow State Doc Accepted by AWS IoT."
@@ -76,7 +78,7 @@ mqttc.on_connect = on_connect
 mqttc.tls_set(CA_ROOT_CERT_FILE, certfile=THING_CERT_FILE, keyfile=THING_PRIVATE_KEY_FILE, cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLSv1_2, ciphers=None)
 
 # Connect with MQTT Broker
-mqttc.connect(MQTT_HOST, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)		
+mqttc.connect(MQTT_HOST, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
 mqttc.loop_start()
 
 
@@ -89,10 +91,10 @@ if data == "1":
 elif data == "2":
 	mqttc.publish(SHADOW_UPDATE_TOPIC,SHADOW_STATE_DOC_LED_OFF,qos=1)
 elif data == "3":
-	sys.exit() 
+	sys.exit()
 else:
 	print("Invalid input try again...")
-	sys.exit() 
+	sys.exit()
 
 
 # Wait for Response

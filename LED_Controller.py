@@ -1,9 +1,11 @@
-# ------------------------------------------
-# --- Author: Pradeep Singh
-# --- Date: 29th March 2017
-# --- Version: 1.0
-# --- Description: This python script will leverage AWS IoT Shadow to control LED
-# ------------------------------------------
+#------------------------------------------
+#--- Author: Pradeep Singh
+#--- Created Date: 29th March 2017
+#--- Forked Date: 21-November-2017
+#--- Version: 1.1
+#--- Python Ver: Python 2.7
+#--- Description: This python script will leverage AWS IoT Shadow to control LED
+#------------------------------------------
 
 # Import package
 import paho.mqtt.client as mqtt
@@ -63,7 +65,7 @@ def LED_Status_Change(Shadow_State_Doc, Type):
 		DESIRED_LED_STATUS = SHADOW_State_Doc['state']['desired']['LED']
 	print "Desired LED Status: " + DESIRED_LED_STATUS
 
-	# Control LED 
+	# Control LED
 	if DESIRED_LED_STATUS == "ON":
 		# Turn LED ON
 		print "\nTurning ON LED..."
@@ -93,15 +95,15 @@ def on_connect(mosq, obj, rc):
 	#mqttc.subscribe(SHADOW_UPDATE_TOPIC, 1)
 	# Subscribe to Update Accepted and Rejected Topics
 	mqttc.subscribe(SHADOW_UPDATE_ACCEPTED_TOPIC, 1)
-	mqttc.subscribe(SHADOW_UPDATE_REJECTED_TOPIC, 1)	
+	mqttc.subscribe(SHADOW_UPDATE_REJECTED_TOPIC, 1)
 	# Subscribe to Get Accepted and Rejected Topics
 	mqttc.subscribe(SHADOW_GET_ACCEPTED_TOPIC, 1)
 	mqttc.subscribe(SHADOW_GET_REJECTED_TOPIC, 1)
 
 
-# Define on_message event function. 
+# Define on_message event function.
 # This function will be invoked every time,
-# a new message arrives for the subscribed topic 
+# a new message arrives for the subscribed topic
 def on_message(mosq, obj, msg):
 	if str(msg.topic) == SHADOW_UPDATE_DELTA_TOPIC:
 		print "\nNew Delta Message Received..."
@@ -132,7 +134,7 @@ def on_subscribe(mosq, obj, mid, granted_qos):
 	#As we are subscribing to 3 Topics, wait till all 3 topics get subscribed
 	#for each subscription mid will get incremented by 1 (starting with 1)
 	if mid == 3:
-		# Fetch current Shadow status. Useful for reconnection scenario. 
+		# Fetch current Shadow status. Useful for reconnection scenario.
 		mqttc.publish(SHADOW_GET_TOPIC,"",qos=1)
 
 def on_disconnect(client, userdata, rc):
@@ -149,7 +151,7 @@ mqttc.on_disconnect = on_disconnect
 mqttc.tls_set(CA_ROOT_CERT_FILE, certfile=THING_CERT_FILE, keyfile=THING_PRIVATE_KEY_FILE, cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLSv1_2, ciphers=None)
 
 # Connect with MQTT Broker
-mqttc.connect(MQTT_HOST, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)		
+mqttc.connect(MQTT_HOST, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
 
 # Continue monitoring the incoming messages for subscribed topic
 mqttc.loop_forever()

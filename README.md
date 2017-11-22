@@ -7,3 +7,7 @@ Repo Content:
 4.  <b>REST-API/REST_update_shadow</b>: Update Shadow via REST protocol
 5.  <b>REST-API/REST_delete_shadow</b>: Delete Shadow via REST protocol
 6.  <b>README.md</b>: information regarding repo
+
+
+Dependencies:
+1.  <b>Paho MQTT Client</b>: Install it using ```pip install paho-mqtt python-etcd``` command 

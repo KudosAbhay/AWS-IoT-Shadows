@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt #import the client1
 import ssl, time, sys, json
+import RPi.GPIO as GPIO
 import argparse
 
 ########################################
@@ -44,10 +45,12 @@ def LED_Status_Change(Shadow_State_Doc, Type):
     if DESIRED_LED_STATUS == "ON":
         # Turn LED ON
         print "\nTurning ON LED..."
+        GPIO.output(LED_PIN, GPIO.HIGH)
         client.publish(SHADOW_UPDATE_TOPIC,SHADOW_STATE_DOC_LED_ON,qos=1)
     elif DESIRED_LED_STATUS == "OFF":
         # Turn LED OFF
         print "\nTurning OFF LED..."
+        GPIO.output(LED_PIN, GPIO.LOW)
         client.publish(SHADOW_UPDATE_TOPIC,SHADOW_STATE_DOC_LED_OFF,qos=1)
     else:
         print "---ERROR--- Invalid LED STATUS."
@@ -99,6 +102,12 @@ def on_log(mosq, obj, level, string):
 ########################################
 
 
+########################################
+# Initiate GPIO for LED
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(LED_PIN, GPIO.OUT)
+########################################
 
 print("Initiating MQTT Client..")
 client = mqtt.Client(THING_NAME) #create new instance

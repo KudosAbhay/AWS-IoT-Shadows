@@ -23,6 +23,11 @@ fi
 serialNumber=$(grep -i Serial /proc/cpuinfo | cut -d : -f2)
 echo "harwareId is: $serialNumber"
 
+# Check to see if root CA file exists, download if not
+if [ ! -f ./root-CA.crt ]; then
+  printf "\nDownloading AWS IoT Root CA certificate from Symantec...\n"
+  curl https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem > root-CA.crt
+fi
 
 # run pub/sub sample app using certificates downloaded in package
 echo "Running AWS IoT application on device..."
@@ -32,4 +37,4 @@ echo "Running AWS IoT application on device..."
 # -c: Path to pem key
 # -k: Path to private key
 
-python device.py -e <ENDPOINT>.iot.<REGION-NAME>.amazonaws.com -t "$serialNumber" -r <ROOT-CA-PATH>.crt -c <PEM-KEY-PATH>.cert.pem -k <PRIVATE-KEY-PATH>.private.key
+python device.py -e <ENDPOINT>.iot.<REGION-NAME>.amazonaws.com -t "$serialNumber" -r root-CA.crt -c <PEM-KEY-PATH>.cert.pem -k <PRIVATE-KEY-PATH>.private.key

@@ -140,8 +140,13 @@ while True:
     time.sleep(20) # wait
     #Publish messages on Topic depending on the accepted value for LED on cloud
     if change_of_state == "ON":
+        #This will be sent if new message from AWS IoT has mentioned to keep the LED ON
         client.publish(SHADOW_UPDATE_TOPIC,SHADOW_STATE_DOC_LED_ON,qos=1)
     elif change_of_state == "OFF":
+        #This will be sent if new message from AWS IoT has mentioned to keep the LED OFF
+        client.publish(SHADOW_UPDATE_TOPIC,SHADOW_STATE_DOC_LED_OFF,qos=1)
+    else:
+        #This will be sent if no new message is received from AWS IoT
         client.publish(SHADOW_UPDATE_TOPIC,SHADOW_STATE_DOC_LED_OFF,qos=1)
     client.loop_stop() #stop the loop
     count = count + 1

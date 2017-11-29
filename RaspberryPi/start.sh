@@ -18,16 +18,16 @@ else
     sudo pip install paho-mqtt python-etcd
 fi
 
-# Read the Unique Serial Number of a RaspberryPi
-# serialNumber="RaspberryPi"
-serialNumber=$(grep -i Serial /proc/cpuinfo | cut -d : -f2)
-echo "harwareId is: $serialNumber"
-
 # Check to see if root CA file exists, download if not
 if [ ! -f ./root-CA.crt ]; then
   printf "\nDownloading AWS IoT Root CA certificate from Symantec...\n"
   curl https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem > root-CA.crt
 fi
+
+# Read the Unique Serial Number of a RaspberryPi
+serialNumber="RaspberryPi"
+# serialNumber=$(grep -i Serial /proc/cpuinfo | cut -d : -f2)
+echo "harwareId is: $serialNumber"
 
 # run pub/sub sample app using certificates downloaded in package
 echo "Running AWS IoT application on device..."

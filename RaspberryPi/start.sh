@@ -19,6 +19,7 @@ else
 fi
 
 # Read the Unique Serial Number of a RaspberryPi
+# serialNumber="RaspberryPi"
 serialNumber=$(grep -i Serial /proc/cpuinfo | cut -d : -f2)
 echo "harwareId is: $serialNumber"
 
